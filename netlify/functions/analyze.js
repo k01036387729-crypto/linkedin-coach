@@ -37,7 +37,7 @@ exports.handler = async (event, context) => {
 
     // 2. Anthropic API 호출을 위한 요청 본문 구성
     const apiBody = JSON.stringify({
-      model: 'claude-3-5-sonnet',
+      model: 'claude-3-haiku-20240307', 
       max_tokens: 4096,
       temperature: 0.2,
       system: systemPrompt, // 시스템 프롬프트 추가
