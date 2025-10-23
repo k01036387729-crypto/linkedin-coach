@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkWrite Coach - LinkedIn 프로필 작성 교육 플랫폼</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-blue-600 { background-color: #2563EB; }
+        .text-blue-600 { color: #2563EB; }
+        .bg-purple-600 { background-color: #9333EA; }
+        .text-purple-600 { color: #9333EA; }
+        .bg-green-600 { background-color: #10B981; }
+        .text-green-600 { color: #10B981; }
+        .bg-yellow-600 { background-color: #CA8A04; }
+        .text-yellow-600 { color: #CA8A04; }
+        .bg-indigo-600 { background-color: #4F46E5; }
+        .text-indigo-600 { color: #4F46E5; }
+        .bg-pink-600 { background-color: #EC4899; }
+        .text-pink-600 { color: #EC4899; }
+        .bg-cyan-600 { background-color: #06B6D4; }
+        .text-cyan-600 { color: #06B6D4; }
+        .bg-blue-100 { background-color: #DBEAFE; }
+        .text-purple-700 { color: #7E22CE; }
+        .text-green-700 { color: #047857; }
+        .text-red-700 { color: #B91C1C; }
+        .text-blue-800 { color: #1E40AF; }
+        .text-blue-900 { color: #1E3A8A; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+
+<div id="modeSelection" class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-4xl w-full">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-gray-900 mb-3">LinkWrite Coach</h1>
+            <p class="text-xl text-gray-600">LinkedIn 프로필 작성 AI 코칭 플랫폼</p>
+            <p class="text-sm text-gray-500 mt-2">7가지 전문 지표 기반 실시간 피드백 시스템</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all cursor-pointer border-2 border-transparent hover:border-blue-500" onclick="selectMode('student')">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">학생 모드</h2>
+                    <p class="text-gray-600 mb-4">프로필을 작성하고 AI 코칭을 받으세요</p>
+                    <ul class="text-left text-sm text-gray-600 space-y-2">
+                        <li>✓ 실시간 7대 지표 분석</li>
+                        <li>✓ 구체적인 개선 힌트</li>
+                        <li>✓ 무제한 재제출</li>
+                        <li>✓ 버전별 비교 분석</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all cursor-pointer border-2 border-transparent hover:border-purple-500" onclick="selectMode('teacher')">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">교사 대시보드</h2>
+                    <p class="text-gray-600 mb-4">학생들의 학습 현황을 관리하세요</p>
+                    <ul class="text-left text-sm text-gray-600 space-y-2">
+                        <li>✓ 전체 학생 진행도 확인</li>
+                        <li>✓ 개별 점수 추이 분석</li>
+                        <li>✓ 제출 이력 열람</li>
+                        <li>✓ 데이터 내보내기</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="studentMode" class="hidden min-h-screen p-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">LinkWrite Coach</h1>
+                    <p class="text-gray-600 mt-1">학생: <span id="studentName" class="font-semibold text-blue-600"></span></p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">현재 버전</p>
+                    <p class="text-3xl font-bold text-blue-600" id="currentVersion">V1</p>
+                    <p class="text-xs text-gray-500 mt-1">최고 점수: <span id="bestScore" class="font-semibold">-</span></p>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm">로그아웃</button>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-6">
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <span class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">1</span>
+                        프로필 Brief 작성
+                    </h2>
+                    
+                    <form id="briefForm" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                💼 Your Role (당신의 역할/직무)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="roleText" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="예: Digital Marketing Specialist focusing on AI-driven content strategy"
+                                required
+                            >
+                            <p class="text-xs text-gray-500 mt-1">명확한 전문 분야를 포함하세요</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                ⭐ Key Strengths (핵심 강점 3-5개, 쉼표로 구분)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="strengths" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="예: SEO optimization, data analytics, content creation, team leadership"
+                                required
+                            >
+                            <p class="text-xs text-gray-500 mt-1">구체적이고 검색 가능한 키워드 사용</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                🏆 Major Achievements (주요 성과, 쉼표로 구분)
+                            </label>
+                            <textarea 
+                                id="achievements" 
+                                rows="3"
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="예: Increased website traffic by 150% in 6 months, Led team of 8 marketers, Launched 3 successful campaigns with $500K budget"
+                                required
+                            ></textarea>
+                            <p class="text-xs text-gray-500 mt-1">⚠️ 중요: 숫자, 기간, 규모를 포함하세요</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                🎯 Professional Goal (커리어 목표)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="goalLine" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="예: To drive digital transformation through data-driven marketing strategies"
+                                required
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                💬 Tone (작성 톤)
+                            </label>
+                            <select 
+                                id="tone" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="professional">Professional (격식있는 전문가)</option>
+                                <option value="balanced" selected>Balanced (전문적이면서 친근한)</option>
+                                <option value="approachable">Approachable (편안하고 개방적인)</option>
+                            </select>
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 font-semibold text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                            id="submitBtn"
+                        >
+                            🚀 AI 진단 받기
+                        </button>
+                    </form>
+
+                    <div class="mt-4 pt-4 border-t">
+                        <button 
+                            onclick="loadDemoData()"
+                            class="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 text-sm font-medium"
+                        >
+                            📋 예시 데이터로 채우기
+                        </button>
+                    </div>
+                </div>
+
+                <div id="historySection" class="bg-white rounded-xl shadow-lg p-6 hidden">
+                    <h3 class="text-lg font-bold mb-3">📚 이전 제출 기록</h3>
+                    <div id="historyList" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <span class="bg-green-100 text-green-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">2</span>
+                        AI 진단 결과
+                    </h2>
+
+                    <div id="loadingState" class="hidden text-center py-12">
+                        <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600 font-medium">AI가 7가지 지표로 분석 중...</p>
+                        <p class="text-gray-400 text-sm mt-2">(30-40초 소요)</p>
+                    </div>
+
+                    <div id="emptyState" class="text-center py-12">
+                        <svg class="mx-auto h-16 w-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <p class="text-gray-500">왼쪽 폼을 작성하고 "AI 진단 받기"를 클릭하세요</p>
+                    </div>
+
+                    <div id="errorState" class="hidden">
+                        <div class="bg-red-50 border-2 border-red-200 rounded-lg p-4">
+                            <p class="font-semibold text-red-800 mb-2">⚠️ 오류 발생</p>
+                            <p class="text-sm text-red-700" id="errorMessage"></p>
+                            <div class="mt-3 text-xs text-red-600">
+                                <p class="font-medium mb-1">해결 방법:</p>
+                                <ul class="list-disc ml-4 space-y-1">
+                                    <li>인터넷 연결 확인</li>
+                                    <li>새로고침 후 재시도</li>
+                                    <li>문제가 지속되면 관리자에게 문의</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="resultsContainer" class="hidden">
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 text-center border-2 border-blue-200">
+                            <p class="text-sm text-gray-600 mb-1">종합 점수</p>
+                            <p class="text-5xl font-bold text-blue-600" id="overallScore">--</p>
+                            <div class="flex justify-center items-center gap-2 text-sm">
+                                <span id="scoreChange" class="font-semibold"></span>
+                                <span id="scoreBadge" class="px-3 py-1 rounded-full text-xs font-semibold"></span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4" id="metricsContainer"></div>
+
+                        <div class="mt-6 p-5 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+                            <p class="font-semibold text-gray-900 mb-2">💡 종합 피드백</p>
+                            <p class="text-sm text-gray-700" id="overallFeedback"></p>
+                        </div>
+
+                        <div class="mt-4 p-5 bg-green-50 border-l-4 border-green-500 rounded-lg">
+                            <p class="font-semibold text-gray-900 mb-2">🎯 다음 단계</p>
+                            <p class="text-sm text-gray-700" id="nextSteps"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="teacherMode" class="hidden min-h-screen p-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">교사 대시보드</h1>
+                <p class="text-gray-600 mt-1">전체 학생 학습 현황 관리</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="exportData()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+                    📥 데이터 내보내기
+                </button>
+                <button onclick="logout()" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm font-medium">
+                    로그아웃
+                </button>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-sm text-gray-500 mb-1">총 학생 수</p>
+                <p class="text-3xl font-bold text-blue-600" id="totalStudents">0</p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-sm text-gray-500 mb-1">총 제출 수</p>
+                <p class="text-3xl font-bold text-green-600" id="totalSubmissions">0</p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-sm text-gray-500 mb-1">평균 점수</p>
+                <p class="text-3xl font-bold text-purple-600" id="avgScore">0</p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5">
+                <p class="text-sm text-gray-500 mb-1">활발한 학습자</p>
+                <p class="text-3xl font-bold text-orange-600" id="activeStudents">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">학생 목록</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600">학번</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600">이름</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600">제출 횟수</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600">최고 점수</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600">최근 점수</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600">개선도</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600">마지막 제출</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600">상세</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody" class="divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="studentDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
+            <div>
+                <h3 class="text-2xl font-bold" id="modalStudentName"></h3>
+                <p class="text-gray-600" id="modalStudentId"></p>
+            </div>
+            <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div id="modalContent" class="p-6"></div>
+    </div>
+</div>
+
+<script>
+    let currentMode = null;
+    let currentStudent = null;
+    const TEACHER_PASSWORD = 'teacher2024';
+
+    const SYSTEM_PROMPT = `You are LinkWrite Coach, an expert AI coach for LinkedIn profile writing.
+
+Your task is to analyze LinkedIn profile briefs using 7 professional criteria and provide detailed, actionable feedback.
+
+CRITICAL: You must ONLY output valid JSON. No explanatory text before or after.
+
+Evaluation Criteria (0-100 each):
+
+1. professional_identity: Role clarity, expertise definition, specialization
+2. value_proposition: Unique strengths, differentiation, market positioning
+3. quantifiable_achievements: Numbers, data, measurable results (CRITICAL for credibility)
+4. keyword_optimization: Industry keywords, searchability, SEO effectiveness
+5. credibility_signals: Specific evidence, verifiable claims, concrete examples
+6. openness_collaboration: Growth mindset, collaboration willingness, learning attitude
+7. readability_structure: Clarity, flow, grammar, professional tone
+
+Scoring Guide:
+- 90-100: Exceptional, industry-leading
+- 80-89: Strong, highly competitive
+- 70-79: Good, meets professional standards
+- 60-69: Adequate, needs improvement
+- Below 60: Significant revision needed
+
+For each criterion provide:
+- score (0-100)
+- strength: What's working well
+- weakness: What needs improvement
+- hint: Specific, actionable suggestion (NOT a rewrite)
+
+Response format:
+{
+"overall_score": (average of 7 scores),
+"metrics": {
+"professional_identity": {"score": X, "strength": "...", "weakness": "...", "hint": "..."},
+"value_proposition": {...},
+"quantifiable_achievements": {...},
+"keyword_optimization": {...},
+"credibility_signals": {...},
+"openness_collaboration": {...},
+"readability_structure": {...}
+},
+"overall_feedback": "2-3 sentence summary of main strengths and gaps",
+"next_steps": "Concrete action items for next revision"
+}`;
+
+    function selectMode(mode) {
+        if (mode === 'teacher') {
+            const password = prompt('교사 비밀번호를 입력하세요:');
+            if (password !== TEACHER_PASSWORD) {
+                alert('❌ 비밀번호가 올바르지 않습니다.');
+                return;
+            }
+        }
+
+        currentMode = mode;
+
+        if (mode === 'student') {
+            const studentId = prompt('학번을 입력하세요:');
+            const studentName = prompt('이름을 입력하세요:');
+            if (!studentId || !studentName) {
+                alert('학번과 이름을 모두 입력해야 합니다.');
+                return;
+            }
+            currentStudent = { id: studentId, name: studentName };
+            initStudent();
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('studentMode').classList.remove('hidden');
+        } else {
+            loadTeacherDashboard();
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('teacherMode').classList.remove('hidden');
+        }
+    }
+
+    function initStudent() {
+        document.getElementById('studentName').textContent = currentStudent.name;
+        
+        const data = getStudentData(currentStudent.id);
+        if (data && data.submissions && data.submissions.length > 0) {
+            document.getElementById('currentVersion').textContent = `V${data.submissions.length + 1}`;
+            document.getElementById('bestScore').textContent = Math.max(...data.submissions.map(s => s.overall_score)).toFixed(1);
+            displayHistory();
+        }
+    }
+
+    function getStudentData(studentId) {
+        const students = JSON.parse(localStorage.getItem('students') || '{}');
+        return students[studentId];
+    }
+
+    function saveSubmission(studentId, submission) {
+        const students = JSON.parse(localStorage.getItem('students') || '{}');
+        
+        if (!students[studentId]) {
+            students[studentId] = {
+                name: currentStudent.name,
+                submissions: []
+            };
+        }
+
+        students[studentId].submissions.push({
+            ...submission,
+            timestamp: new Date().toISOString(),
+            version: students[studentId].submissions.length + 1
+        });
+
+        localStorage.setItem('students', JSON.stringify(students));
+    }
+
+    function displayHistory() {
+        const data = getStudentData(currentStudent.id);
+        if (!data || !data.submissions || data.submissions.length === 0) return;
+
+        const historySection = document.getElementById('historySection');
+        const historyList = document.getElementById('historyList');
+        historySection.classList.remove('hidden');
+
+        historyList.innerHTML = data.submissions.map((sub, idx) => {
+            const change = idx > 0 ? sub.overall_score - data.submissions[idx-1].overall_score : 0;
+            const changeColor = change > 0 ? 'text-green-600' : change < 0 ? 'text-red-600' : 'text-gray-600';
+            return `
+                <div class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer" onclick="loadSubmission(${idx})">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="font-semibold">V${sub.version}</span>
+                            <span class="text-xs text-gray-500 ml-2">${new Date(sub.timestamp).toLocaleString('ko-KR')}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-blue-600">${sub.overall_score.toFixed(1)}</span>
+                            ${change !== 0 ? `<span class="${changeColor} text-sm">${change > 0 ? '+' : ''}${change.toFixed(1)}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function loadSubmission(index) {
+        const data = getStudentData(currentStudent.id);
+        const sub = data.submissions[index];
+        
+        document.getElementById('roleText').value = sub.brief.role_text;
+        document.getElementById('strengths').value = sub.brief.strengths.join(', ');
+        document.getElementById('achievements').value = sub.brief.achievements.join(', ');
+        document.getElementById('goalLine').value = sub.brief.goal_line;
+        document.getElementById('tone').value = sub.brief.tone;
+
+        displayResults(sub);
+    }
+
+    function loadDemoData() {
+        document.getElementById('roleText').value = 'Digital Marketing Specialist with expertise in AI-driven content strategy and data analytics';
+        document.getElementById('strengths').value = 'SEO optimization, Marketing automation, Data-driven decision making, Cross-functional team leadership';
+        document.getElementById('achievements').value = 'Increased organic traffic by 230% within 8 months, Led content team of 12 members, Managed annual marketing budget of $850K with 180% ROI, Launched 5 successful campaigns reaching 2M+ users';
+        document.getElementById('goalLine').value = 'To revolutionize digital marketing through ethical AI implementation and data storytelling';
+        document.getElementById('tone').value = 'balanced';
+    }
+
+    document.getElementById('briefForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const briefData = {
+            role_text: document.getElementById('roleText').value,
+            strengths: document.getElementById('strengths').value.split(',').map(s => s.trim()),
+            achievements: document.getElementById('achievements').value.split(',').map(s => s.trim()),
+            tone: document.getElementById('tone').value,
+            goal_line: document.getElementById('goalLine').value
+        };
+
+        const userPrompt = `Analyze this LinkedIn profile brief:
+
+${JSON.stringify(briefData, null, 2)}
+
+Provide detailed evaluation in JSON format ONLY.`;
+
+        document.getElementById('emptyState').classList.add('hidden');
+        document.getElementById('resultsContainer').classList.add('hidden');
+        document.getElementById('errorState').classList.add('hidden');
+        document.getElementById('loadingState').classList.remove('hidden');
+        document.getElementById('submitBtn').disabled = true;
+
+        try {
+            const response = await fetch('/.netlify/functions/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    briefData,
+                    systemPrompt: SYSTEM_PROMPT,
+                    userPrompt
+                })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Function Error ${response.status}: ${errorText}`);
+            }
+
+            const data = await response.json();
+            const aiResponse = data.content[0].text;
+            const result = JSON.parse(aiResponse);
+
+            const submission = {
+                brief: briefData,
+                ...result
+            };
+            saveSubmission(currentStudent.id, submission);
+
+            displayResults(submission);
+
+            const studentData = getStudentData(currentStudent.id);
+            document.getElementById('currentVersion').textContent = `V${studentData.submissions.length}`;
+            document.getElementById('bestScore').textContent = Math.max(...studentData.submissions.map(s => s.overall_score)).toFixed(1);
+            displayHistory();
+
+        } catch (error) {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('errorState').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = error.message;
+        } finally {
+            document.getElementById('submitBtn').disabled = false;
+        }
+    });
+
+    function displayResults(submission) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('resultsContainer').classList.remove('hidden');
+
+        const overallScore = submission.overall_score;
+        document.getElementById('overallScore').textContent = overallScore.toFixed(1);
+
+        const data = getStudentData(currentStudent.id);
+        const submissions = data.submissions;
+        const currentVersionIndex = submissions.findIndex(s => s.overall_score === overallScore);
+
+        if (currentVersionIndex > 0) {
+            const prevScore = submissions[currentVersionIndex - 1].overall_score;
+            const change = overallScore - prevScore;
+            const changeEl = document.getElementById('scoreChange');
+            const badgeEl = document.getElementById('scoreBadge');
+            
+            if (change > 0) {
+                changeEl.textContent = `+${change.toFixed(1)}점`;
+                changeEl.className = 'font-semibold text-green-600';
+                badgeEl.textContent = '개선됨';
+                badgeEl.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700';
+            } else if (change < 0) {
+                changeEl.textContent = `${change.toFixed(1)}점`;
+                changeEl.className = 'font-semibold text-red-600';
+                badgeEl.textContent = '하락';
+                badgeEl.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700';
+            } else {
+                changeEl.textContent = '변화 없음';
+                changeEl.className = 'font-semibold text-gray-600';
+                badgeEl.textContent = '동일';
+                badgeEl.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700';
+            }
+        } else {
+            document.getElementById('scoreChange').textContent = '첫 제출';
+            document.getElementById('scoreChange').className = 'font-semibold text-gray-600';
+            document.getElementById('scoreBadge').textContent = 'NEW';
+            document.getElementById('scoreBadge').className = 'px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700';
+        }
+
+        const metricsContainer = document.getElementById('metricsContainer');
+        const metricNames = {
+            professional_identity: { name: '💼 전문성 정체성', color: 'blue' },
+            value_proposition: { name: '⭐ 가치 제안', color: 'purple' },
+            quantifiable_achievements: { name: '🏆 정량적 성과', color: 'green' },
+            keyword_optimization: { name: '🔍 키워드 최적화', color: 'yellow' },
+            credibility_signals: { name: '✅ 신뢰 신호', color: 'indigo' },
+            openness_collaboration: { name: '🤝 개방성/협업', color: 'pink' },
+            readability_structure: { name: '📖 가독성/구조', color: 'cyan' }
+        };
+
+        metricsContainer.innerHTML = Object.entries(submission.metrics).map(([key, metric]) => {
+            const config = metricNames[key];
+            
+            return `
+                <div class="border-2 border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-semibold text-gray-800">${config.name}</h4>
+                        <span class="text-2xl font-bold text-${config.color}-600">${metric.score}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+                        <div class="bg-${config.color}-600 h-2 rounded-full transition-all" style="width: ${metric.score}%"></div>
+                    </div>
+                    
+                    ${metric.strength ? `
+                        <div class="mb-2">
+                            <p class="text-xs font-semibold text-green-700 mb-1">✓ 강점:</p>
+                            <p class="text-xs text-gray-700">${metric.strength}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${metric.weakness ? `
+                        <div class="mb-2">
+                            <p class="text-xs font-semibold text-red-700 mb-1">⚠ 약점:</p>
+                            <p class="text-xs text-gray-700">${metric.weakness}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${metric.hint ? `
+                        <div class="mt-2 p-2 bg-blue-50 rounded border-l-2 border-blue-400">
+                            <p class="text-xs font-semibold text-blue-800 mb-1">💡 개선 힌트:</p>
+                            <p class="text-xs text-blue-900">${metric.hint}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('overallFeedback').textContent = submission.overall_feedback;
+        document.getElementById('nextSteps').textContent = submission.next_steps;
+    }
+
+    function loadTeacherDashboard() {
+        const students = JSON.parse(localStorage.getItem('students') || '{}');
+        const studentIds = Object.keys(students);
+
+        const totalSubmissions = studentIds.reduce((sum, id) => sum + students[id].submissions.length, 0);
+        const allScores = studentIds.flatMap(id => students[id].submissions.map(s => s.overall_score));
+        const avgScore = allScores.length > 0 ? (allScores.reduce((a, b) => a + b, 0) / allScores.length).toFixed(1) : 0;
+        const activeStudents = studentIds.filter(id => students[id].submissions.length >= 2).length;
+
+        document.getElementById('totalStudents').textContent = studentIds.length;
+        document.getElementById('totalSubmissions').textContent = totalSubmissions;
+        document.getElementById('avgScore').textContent = avgScore;
+        document.getElementById('activeStudents').textContent = activeStudents;
+
+        const tbody = document.getElementById('studentTableBody');
+        tbody.innerHTML = studentIds.map(id => {
+            const student = students[id];
+            const submissions = student.submissions;
+            const latestScore = submissions[submissions.length - 1].overall_score;
+            const bestScore = Math.max(...submissions.map(s => s.overall_score));
+            const improvement = submissions.length > 1 
+                ? latestScore - submissions[0].overall_score 
+                : 0;
+            const lastSubmit = new Date(submissions[submissions.length - 1].timestamp).toLocaleDateString('ko-KR');
+
+            return `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm font-medium text-gray-900">${id}</td>
+                    <td class="px-4 py-3 text-sm text-gray-900">${student.name}</td>
+                    <td class="px-4 py-3 text-sm text-center">${submissions.length}</td>
+                    <td class="px-4 py-3 text-sm text-center font-semibold text-green-600">${bestScore.toFixed(1)}</td>
+                    <td class="px-4 py-3 text-sm text-center font-semibold text-blue-600">${latestScore.toFixed(1)}</td>
+                    <td class="px-4 py-3 text-sm text-center font-semibold ${improvement >= 0 ? 'text-green-600' : 'text-red-600'}">
+                        ${improvement >= 0 ? '+' : ''}${improvement.toFixed(1)}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-center text-gray-600">${lastSubmit}</td>
+                    <td class="px-4 py-3 text-sm text-center">
+                        <button onclick="viewStudentDetail('${id}')" class="text-blue-600 hover:text-blue-800 font-medium">
+                            상세보기
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function viewStudentDetail(studentId) {
+        const students = JSON.parse(localStorage.getItem('students') || '{}');
+        const student = students[studentId];
+
+        document.getElementById('modalStudentName').textContent = student.name;
+        document.getElementById('modalStudentId').textContent = `학번: ${studentId}`;
+
+        const modalContent = document.getElementById('modalContent');
+        modalContent.innerHTML = `
+            <div class="space-y-6">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-semibold mb-3">📈 점수 추이</h4>
+                    <div class="flex items-end gap-2 h-40">
+                        ${student.submissions.map((sub, idx) => {
+                            const height = (sub.overall_score / 100) * 100 * 0.8 + 20;
+                            const barColor = sub.overall_score >= 80 ? 'bg-green-600' : sub.overall_score >= 60 ? 'bg-yellow-600' : 'bg-red-600';
+                            return `
+                                <div class="flex-1 flex flex-col items-center justify-end">
+                                    <div class="text-xs font-semibold mb-1">${sub.overall_score.toFixed(1)}</div>
+                                    <div class="w-full ${barColor} rounded-t" style="height: ${height}%"></div>
+                                    <div class="text-xs text-gray-600 mt-1">V${idx + 1}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-3">📝 제출 이력</h4>
+                    ${student.submissions.map((sub, idx) => `
+                        <div class="mb-4 border rounded-lg p-4 bg-white">
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <span class="font-bold text-lg">버전 ${idx + 1}</span>
+                                    <span class="text-sm text-gray-500 ml-2">${new Date(sub.timestamp).toLocaleString('ko-KR')}</span>
+                                </div>
+                                <span class="text-2xl font-bold text-blue-600">${sub.overall_score.toFixed(1)}</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 mb-3 text-sm">
+                                ${Object.entries(sub.metrics).map(([key, m]) => `
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">${key.replace(/_/g, ' ')}:</span>
+                                        <span class="font-semibold">${m.score}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <details class="text-sm">
+                                <summary class="cursor-pointer text-blue-600 font-medium">작성 내용 보기</summary>
+                                <div class="mt-2 p-3 bg-gray-50 rounded">
+                                    <p class="mb-1"><strong>Role:</strong> ${sub.brief.role_text}</p>
+                                    <p class="mb-1"><strong>Strengths:</strong> ${sub.brief.strengths.join(', ')}</p>
+                                    <p class="mb-1"><strong>Achievements:</strong> ${sub.brief.achievements.join(', ')}</p>
+                                    <p><strong>Goal:</strong> ${sub.brief.goal_line}</p>
+                                </div>
+                            </details>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        document.getElementById('studentDetailModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('studentDetailModal').classList.add('hidden');
+    }
+
+    function exportData() {
+        const students = JSON.parse(localStorage.getItem('students') || '{}');
+        const dataStr = JSON.stringify(students, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `linkwrite-coach-data-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+    }
+
+    function logout() {
+        if (confirm('로그아웃 하시겠습니까?')) {
+            currentMode = null;
+            currentStudent = null;
+            document.getElementById('studentMode').classList.add('hidden');
+            document.getElementById('teacherMode').classList.add('hidden');
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+    }
+
+    document.getElementById('studentDetailModal').addEventListener('click', (e) => {
+        if (e.target.id === 'studentDetailModal') {
+            closeModal();
+        }
+    });
+</script>
+
+</body>
+</html>
