@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Profile Writing Coach</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            right: -50%;
+            height: 3px;
+            background: #e0e0e0;
+            z-index: 0;
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.completed::before {
+            background: #00a86b;
+        }
+
+        .progress-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            color: #999;
+            border: 3px solid #e0e0e0;
+        }
+
+        .progress-step.active .progress-circle {
+            background: #0077b5;
+            color: white;
+            border-color: #0077b5;
+            transform: scale(1.1);
+        }
+
+        .progress-step.completed .progress-circle {
+            background: #00a86b;
+            color: white;
+            border-color: #00a86b;
+        }
+
+        .progress-label {
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .progress-step.active .progress-label {
+            color: #0077b5;
+            font-weight: 700;
+        }
+
+        .progress-step.completed .progress-label {
+            color: #00a86b;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .step-section {
+            display: none;
+        }
+
+        .step-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .step-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .why-matters {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .why-matters h3 {
+            color: #f57c00;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .why-matters p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .criteria-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .criteria-box h3 {
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .criteria-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #c8e6c9;
+        }
+
+        .criteria-item:last-child {
+            border-bottom: none;
+        }
+
+        .criteria-item span:first-child {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .criteria-item span:last-child {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .example-toggle {
+            margin-bottom: 20px;
+        }
+
+        .example-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 2px solid #1976d2;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .example-btn:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .examples-container {
+            display: none;
+            margin-top: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .examples-container.show {
+            display: block;
+        }
+
+        .example-box {
+            margin-bottom: 20px;
+        }
+
+        .example-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .example-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-label.good {
+            color: #2e7d32;
+        }
+
+        .example-label.bad {
+            color: #c62828;
+        }
+
+        .example-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ddd;
+        }
+
+        .example-box.good .example-content {
+            border-left-color: #4caf50;
+        }
+
+        .example-box.bad .example-content {
+            border-left-color: #f44336;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #0077b5;
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: -22px;
+            right: 5px;
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #0077b5;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #005885;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,119,181,0.3);
+        }
+
+        .btn-secondary {
+            background: #00a86b;
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #008c59;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,168,107,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .feedback-section {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #0077b5;
+        }
+
+        .feedback-section.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #0077b5;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .score-label {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .score-breakdown {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .score-breakdown h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .score-item:last-child {
+            border-bottom: none;
+        }
+
+        .score-item-label {
+            color: #666;
+        }
+
+        .score-item-value {
+            font-weight: 600;
+        }
+
+        .score-item-value.good {
+            color: #4caf50;
+        }
+
+        .score-item-value.poor {
+            color: #f44336;
+        }
+
+        .improvement-section {
+            margin-top: 20px;
+        }
+
+        .improvement-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .improvement-list {
+            list-style: none;
+        }
+
+        .improvement-list li {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #ff6b6b;
+            line-height: 1.5;
+        }
+
+        .improvement-list li::before {
+            content: "💡 ";
+            margin-right: 8px;
+        }
+
+        .suggestions-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+        }
+
+        .suggestions-section h3 {
+            color: #0077b5;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .suggestion-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #0077b5;
+        }
+
+        .suggestion-item strong {
+            color: #0077b5;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .suggestion-item p {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+        .reference-box {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 8px;
+            border-left: 4px solid #0077b5;
+        }
+
+        .reference-box h4 {
+            color: #0077b5;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .reference-box p {
+            color: #555;
+            line-height: 1.7;
+            margin: 8px 0;
+        }
+
+        .final-output {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 10px;
+            border: 3px solid #00a86b;
+        }
+
+        .final-output h3 {
+            color: #00a86b;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .final-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-size: 1.05em;
+        }
+
+        .copy-btn {
+            margin-top: 15px;
+            background: #00a86b;
+            color: white;
+            width: auto;
+            display: inline-block;
+        }
+
+        .copy-btn:hover {
+            background: #008c59;
+        }
+
+        .auto-score-notice {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        .auto-score-notice strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .learning-summary {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f3e5f5;
+            border-radius: 10px;
+            border-left: 5px solid #9c27b0;
+        }
+
+        .learning-summary h3 {
+            color: #7b1fa2;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .learning-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #9c27b0;
+        }
+
+        .learning-item h4 {
+            color: #7b1fa2;
+            margin-bottom: 8px;
+        }
+
+        .learning-item p {
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 LinkedIn Profile Writing Coach</h1>
+            <p>Learn how AI evaluates professional writing through 4-step guided practice</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+                <div class="progress-circle">1</div>
+                <div class="progress-label">Profile Brief</div>
+            </div>
+            <div class="progress-step" data-step="2">
+                <div class="progress-circle">2</div>
+                <div class="progress-label">About Section</div>
+            </div>
+            <div class="progress-step" data-step="3">
+                <div class="progress-circle">3</div>
+                <div class="progress-label">Formality Check</div>
+            </div>
+            <div class="progress-step" data-step="4">
+                <div class="progress-circle">4</div>
+                <div class="progress-label">Optimization</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Step 1: Profile Brief -->
+            <div class="step-section active" id="step1">
+                <h2 class="step-title">Step 1: Profile Brief</h2>
+                <p class="step-description">Summarize your professional profile with key information. This is the foundation of your LinkedIn About section.</p>
+                
+                <div class="why-matters">
+                    <h3>🎯 Why This Matters</h3>
+                    <p>The profile brief helps you organize your thoughts before writing full sentences. AI evaluates whether you've provided specific, quantifiable information that will make your profile compelling. This step teaches you to think in terms of concrete achievements rather than vague descriptions.</p>
+                </div>
+
+                <div class="criteria-box">
+                    <h3>📊 Evaluation Criteria (100 points total)</h3>
+                    <div class="criteria-item">
+                        <span>Role Clarity & Specificity</span>
+                        <span>20 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Key Strengths Detail & Relevance</span>
+                        <span>25 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Quantifiable Achievements</span>
+                        <span>30 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Professional Goal Specificity</span>
+                        <span>25 points</span>
+                    </div>
+                </div>
+
+                <div class="example-toggle">
+                    <button class="example-btn" onclick="toggleExamples('examples1')">📖 See Examples (Good vs. Poor)</button>
+                </div>
+
+                <div class="examples-container" id="examples1">
+                    <div class="example-box good">
+                        <div class="example-label good">✅ Good Example</div>
+                        <div class="example-content">
+                            <p><strong>Role:</strong> Senior Data Analyst specializing in healthcare analytics</p>
+                            <p><strong>Strengths:</strong> Python/R programming, SQL database optimization, predictive modeling, data visualization with Tableau and Power BI</p>
+                            <p><strong>Achievements:</strong> Reduced hospital readmission rates by 18% through predictive model implementation. Automated reporting system saving 40 hours/week for analytics team. Led cross-functional team of 6 analysts.</p>
+                            <p><strong>Goal:</strong> To leverage 7 years of healthcare data expertise to drive evidence-based decision-making in health tech startups, focusing on patient outcome improvement.</p>
+                        </div>
+                    </div>
+                    <div class="example-box bad">
+                        <div class="example-label bad">❌ Poor Example</div>
+                        <div class="example-content">
+                            <p><strong>Role:</strong> Data Analyst</p>
+                            <p><strong>Strengths:</strong> Good with data, teamwork, communication</p>
+                            <p><strong>Achievements:</strong> Worked on many projects, helped the team</p>
+                            <p><strong>Goal:</strong> Want a good job in tech</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Your Role</label>
+                    <input type="text" id="role" placeholder="e.g., Senior Digital Marketing Specialist in B2B SaaS" oninput="updateCounter('role', 100)">
+                    <span class="char-counter" id="role-counter">0/100</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Key Strengths</label>
+                    <textarea id="strengths" placeholder="e.g., SEO optimization (5+ years), content strategy, data-driven marketing campaigns, Google Analytics expert, A/B testing" oninput="updateCounter('strengths', 200)"></textarea>
+                    <span class="char-counter" id="strengths-counter">0 chars</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Major Achievements</label>
+                    <textarea id="achievements" placeholder="e.g., Increased organic traffic by 300% in 12 months. Led team of 5 marketers. Reduced customer acquisition cost by 45%. Managed $500K annual marketing budget." oninput="updateCounter('achievements', 300)"></textarea>
+                    <span class="char-counter" id="achievements-counter">0 chars</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Professional Goal</label>
+                    <textarea id="goal" placeholder="e.g., To leverage 8 years of digital marketing expertise to drive business growth in tech startups, focusing on scalable acquisition strategies" oninput="updateCounter('goal', 200)"></textarea>
+                    <span class="char-counter" id="goal-counter">0 chars</span>
+                </div>
+
+                <div class="feedback-section" id="feedback1"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="evaluateStep1()">Evaluate</button>
+                    <button class="btn btn-secondary" onclick="goToStep(2)" id="nextStep1" disabled>Next Step →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: About Section -->
+            <div class="step-section" id="step2">
+                <h2 class="step-title">Step 2: About Section Writing</h2>
+                <p class="step-description">Transform your brief into complete, grammatically correct sentences.</p>
+                
+                <div class="why-matters">
+                    <h3>🎯 Why This Matters</h3>
+                    <p>Grammar errors undermine credibility. This step teaches you that AI evaluates not just what you say, but how you say it. Professional writing requires attention to sentence structure, verb tense consistency, and proper punctuation. These details signal professionalism to recruiters and connections.</p>
+                </div>
+
+                <div class="criteria-box">
+                    <h3>📊 Evaluation Criteria (100 points total)</h3>
+                    <div class="criteria-item">
+                        <span>Capitalization & Punctuation</span>
+                        <span>20 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Sentence Structure & Length</span>
+                        <span>25 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Verb Consistency & Word Choice</span>
+                        <span>30 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Pronoun Usage & Clarity</span>
+                        <span>25 points</span>
+                    </div>
+                </div>
+
+                <div class="example-toggle">
+                    <button class="example-btn" onclick="toggleExamples('examples2')">📖 See Examples (Good vs. Poor)</button>
+                </div>
+
+                <div class="examples-container" id="examples2">
+                    <div class="example-box good">
+                        <div class="example-label good">✅ Good Example</div>
+                        <div class="example-content">
+                            <p>I am a senior data analyst with 7 years of experience in healthcare analytics. I specialize in Python programming, SQL optimization, and predictive modeling. Throughout my career, I have reduced hospital readmission rates by 18% through data-driven interventions. I automated reporting systems that save my team 40 hours per week. My goal is to leverage my expertise in evidence-based decision-making to improve patient outcomes in health tech companies.</p>
+                        </div>
+                    </div>
+                    <div class="example-box bad">
+                        <div class="example-label bad">❌ Poor Example</div>
+                        <div class="example-content">
+                            <p>i am data analyst with experience I work with data and I helped many projects there are many skills I have like python and sql and I got good results in my work and I want to get a job in tech</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reference-box" id="briefReference"></div>
+
+                <div class="input-group">
+                    <label>About Section (Write in complete sentences)</label>
+                    <textarea id="aboutText" style="min-height: 200px;" placeholder="Transform your brief into 3-5 well-structured sentences..." oninput="updateWordCounter('aboutText')"></textarea>
+                    <span class="char-counter" id="aboutText-counter">0 words</span>
+                </div>
+
+                <div class="feedback-section" id="feedback2"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="evaluateStep2()">Evaluate</button>
+                    <button class="btn btn-secondary" onclick="goToStep(3)" id="nextStep2" disabled>Next Step →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Formality Check -->
+            <div class="step-section" id="step3">
+                <h2 class="step-title">Step 3: Formality & Politeness Review</h2>
+                <p class="step-description">Adjust your writing tone to match LinkedIn's professional standards.</p>
+                
+                <div class="why-matters">
+                    <h3>🎯 Why This Matters</h3>
+                    <p>Platform-appropriate formality is crucial. LinkedIn is professional, not casual. AI checks for contractions, informal verbs, and tone markers that signal your understanding of professional discourse. This isn't about being stuffy—it's about demonstrating that you can code-switch appropriately for different contexts.</p>
+                </div>
+
+                <div class="criteria-box">
+                    <h3>📊 Evaluation Criteria (100 points total)</h3>
+                    <div class="criteria-item">
+                        <span>Formal Language (no contractions)</span>
+                        <span>25 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Professional Verb Choice</span>
+                        <span>25 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Politeness Markers</span>
+                        <span>25 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Appropriate Tone & Register</span>
+                        <span>25 points</span>
+                    </div>
+                </div>
+
+                <div class="auto-score-notice">
+                    <strong>✨ Auto-evaluation complete!</strong>
+                    Review the suggestions below and revise your text accordingly.
+                </div>
+
+                <div class="reference-box" id="formalityReference"></div>
+
+                <div class="suggestions-section" id="formalitySuggestions"></div>
+
+                <div class="input-group">
+                    <label>Revised About Section</label>
+                    <textarea id="formalText" style="min-height: 200px;" placeholder="Revise based on suggestions..." oninput="updateWordCounter('formalText')"></textarea>
+                    <span class="char-counter" id="formalText-counter">0 words</span>
+                </div>
+
+                <div class="feedback-section" id="feedback3"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="evaluateStep3()">Re-evaluate</button>
+                    <button class="btn btn-secondary" onclick="goToStep(4)" id="nextStep3" disabled>Next Step →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: LinkedIn Optimization -->
+            <div class="step-section" id="step4">
+                <h2 class="step-title">Step 4: LinkedIn Platform Optimization</h2>
+                <p class="step-description">Enhance readability and engagement for LinkedIn's specific interface and audience.</p>
+                
+                <div class="why-matters">
+                    <h3>🎯 Why This Matters</h3>
+                    <p>Each platform has unique conventions. LinkedIn rewards scannable content with emojis, line breaks, and concise language. AI evaluates whether you understand platform-specific best practices: mobile readability, visual hierarchy, and engagement optimization. These aren't superficial—they're accessibility and user experience principles.</p>
+                </div>
+
+                <div class="criteria-box">
+                    <h3>📊 Evaluation Criteria (100 points total)</h3>
+                    <div class="criteria-item">
+                        <span>Visual Elements (emojis, formatting)</span>
+                        <span>20 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Readability (line breaks, length)</span>
+                        <span>30 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Word Count Optimization (120-150)</span>
+                        <span>25 points</span>
+                    </div>
+                    <div class="criteria-item">
+                        <span>Sentence Length & Scannability</span>
+                        <span>25 points</span>
+                    </div>
+                </div>
+
+                <div class="auto-score-notice">
+                    <strong>✨ Optimization suggestions ready!</strong>
+                    Apply the suggestions below to complete your final version.
+                </div>
+
+                <div class="reference-box" id="optimizationReference"></div>
+
+                <div class="suggestions-section" id="optimizationSuggestions"></div>
+
+                <div class="input-group">
+                    <label>Final About Section</label>
+                    <textarea id="finalText" style="min-height: 200px;" placeholder="Create your final version with optimization suggestions..." oninput="updateWordCounter('finalText')"></textarea>
+                    <span class="char-counter" id="finalText-counter">0 words</span>
+                </div>
+
+                <div class="feedback-section" id="feedback4"></div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="evaluateStep4()">Final Evaluation</button>
+                </div>
+
+                <div class="final-output" id="finalOutput" style="display: none;">
+                    <h3>🎉 Final Version Complete!</h3>
+                    <div class="final-content" id="finalContent"></div>
+                    <button class="btn copy-btn" onclick="copyFinalText()">📋 Copy to Clipboard</button>
+                </div>
+
+                <div class="learning-summary" id="learningSummary" style="display: none;">
+                    <h3>🎓 What You Learned: AI Evaluation Principles</h3>
+                    <div class="learning-item">
+                        <h4>Step 1: Specificity Over Vagueness</h4>
+                        <p>AI evaluates concrete details, numbers, and specific skills. Generic terms like "good at teamwork" score poorly compared to "led cross-functional team of 8 members across 3 departments."</p>
+                    </div>
+                    <div class="learning-item">
+                        <h4>Step 2: Grammar as Credibility Signal</h4>
+                        <p>Every grammatical error reduces your perceived professionalism. AI checks capitalization, punctuation, sentence structure, and consistency because these are the first things human readers notice.</p>
+                    </div>
+                    <div class="learning-item">
+                        <h4>Step 3: Register Appropriateness</h4>
+                        <p>Different contexts require different language levels. LinkedIn demands formal register: full forms instead of contractions, professional verbs, polite closings. AI learns these conventions from millions of successful profiles.</p>
+                    </div>
+                    <div class="learning-item">
+                        <h4>Step 4: Platform-Specific Optimization</h4>
+                        <p>LinkedIn isn't just text—it's a mobile-first, scan-friendly interface. AI evaluates visual hierarchy, word count, readability metrics, and engagement elements that make profiles stand out in feeds and searches.</p>
+                    </div>
+                    <div class="learning-item">
+                        <h4>🔑 Key Takeaway</h4>
+                        <p>When you ask AI to "write my LinkedIn profile," it's applying all these evaluation criteria simultaneously. Now you understand the standards that shape AI-generated content. You've learned to think like the algorithm—and write better than it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let briefData = {};
+        let aboutText = '';
+        let formalText = '';
+
+        function toggleExamples(id) {
+            const container = document.getElementById(id);
+            container.classList.toggle('show');
+        }
+
+        function updateCounter(fieldId, maxLength) {
+            const field = document.getElementById(fieldId);
+            const counter = document.getElementById(fieldId + '-counter');
+            const length = field.value.length;
+            
+            if (maxLength) {
+                counter.textContent = `${length}/${maxLength}`;
+                if (length > maxLength) {
+                    counter.style.color = '#f44336';
+                } else {
+                    counter.style.color = '#999';
+                }
+            } else {
+                counter.textContent = `${length} chars`;
+            }
+        }
+
+        function updateWordCounter(fieldId) {
+            const field = document.getElementById(fieldId);
+            const counter = document.getElementById(fieldId + '-counter');
+            const words = field.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+            counter.textContent = `${words} words`;
+            
+            if (fieldId === 'finalText') {
+                if (words >= 120 && words <= 150) {
+                    counter.style.color = '#4caf50';
+                } else if (words > 150) {
+                    counter.style.color = '#ff9800';
+                } else {
+                    counter.style.color = '#999';
+                }
+            }
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('step' + step).classList.add('active');
+
+            document.querySelectorAll('.progress-step').forEach(ps => {
+                const stepNum = parseInt(ps.dataset.step);
+                ps.classList.remove('active');
+                if (stepNum < step) {
+                    ps.classList.add('completed');
+                } else if (stepNum === step) {
+                    ps.classList.add('active');
+                } else {
+                    ps.classList.remove('completed');
+                }
+            });
+
+            currentStep = step;
+
+            if (step === 2) {
+                displayBriefReference();
+            } else if (step === 3) {
+                displayFormalityCheck();
+            } else if (step === 4) {
+                displayOptimizationSuggestions();
+            }
+        }
+
+        function evaluateStep1() {
+            const role = document.getElementById('role').value.trim();
+            const strengths = document.getElementById('strengths').value.trim();
+            const achievements = document.getElementById('achievements').value.trim();
+            const goal = document.getElementById('goal').value.trim();
+
+            if (!role || !strengths || !achievements || !goal) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            briefData = { role, strengths, achievements, goal };
+
+            let roleScore = 0;
+            let strengthsScore = 0;
+            let achievementsScore = 0;
+            let goalScore = 0;
+            const improvements = [];
+
+            // Role evaluation (20 points)
+            if (role.length < 20) {
+                roleScore = 5;
+                improvements.push('Role is too vague. Add specificity: industry, seniority level, or specialization (e.g., "Senior Data Analyst in Healthcare" not just "Data Analyst")');
+            } else if (role.length < 40) {
+                roleScore = 15;
+                improvements.push('Role is good but could be more specific. Consider adding your industry or key focus area.');
+            } else {
+                roleScore = 20;
+            }
+
+            // Strengths evaluation (25 points)
+            const strengthsLength = strengths.length;
+            const hasCommas = strengths.includes(',') || strengths.includes('and');
+            const skillCount = strengths.split(/[,;]/).filter(s => s.trim().length > 0).length;
+            
+            if (strengthsLength < 30) {
+                strengthsScore = 5;
+                improvements.push('Key Strengths is too brief. List at least 4-5 specific skills or areas of expertise with detail.');
+            } else if (!hasCommas || skillCount < 3) {
+                strengthsScore = 10;
+                improvements.push('List multiple specific skills separated by commas. Include technical skills, tools, or methodologies.');
+            } else if (strengthsLength < 60) {
+                strengthsScore = 18;
+                improvements.push('Good start! Add more detail to each strength (e.g., "Python" → "Python programming for data analysis")');
+            } else {
+                strengthsScore = 25;
+            }
+
+            // Achievements evaluation (30 points) - Most important
+            const hasNumbers = /\d+/.test(achievements);
+            const numberCount = (achievements.match(/\d+/g) || []).length;
+            const hasPercent = achievements.includes('%');
+            const achievementsLength = achievements.length;
+            
+            if (achievementsLength < 40) {
+                achievementsScore = 5;
+                improvements.push('Major Achievements is far too short. Describe specific accomplishments with measurable outcomes.');
+            } else if (!hasNumbers) {
+                achievementsScore = 10;
+                improvements.push('CRITICAL: No quantifiable metrics found. Add numbers: percentages, dollar amounts, team sizes, time saved, growth rates.');
+            } else if (numberCount < 2) {
+                achievementsScore = 18;
+                improvements.push('Good - you included a number. Add MORE metrics to strengthen impact (aim for 2-3 quantifiable achievements).');
+            } else if (!hasPercent && numberCount < 3) {
+                achievementsScore = 24;
+                improvements.push('Excellent use of numbers! Consider adding percentages or comparing before/after states for even stronger impact.');
+            } else {
+                achievementsScore = 30;
+            }
+
+            // Goal evaluation (25 points)
+            const goalLength = goal.length;
+            const hasIndustryMention = /\b(tech|healthcare|finance|marketing|education|startup|enterprise|SaaS|B2B|B2C)\b/i.test(goal);
+            const hasActionVerb = /\b(leverage|drive|build|lead|transform|develop|create|establish)\b/i.test(goal);
+            
+            if (goalLength < 30) {
+                goalScore = 5;
+                improvements.push('Professional Goal is too vague. Specify WHAT you want to do, WHERE (industry), and WHY (impact).');
+            } else if (!hasIndustryMention && !hasActionVerb) {
+                goalScore = 12;
+                improvements.push('Goal needs more specificity. Mention target industry and what you want to accomplish or contribute.');
+            } else if (!hasIndustryMention || !hasActionVerb) {
+                goalScore = 18;
+                improvements.push('Good goal clarity! Strengthen by adding both: specific industry/company type AND active contribution you will make.');
+            } else {
+                goalScore = 25;
+            }
+
+            const totalScore = roleScore + strengthsScore + achievementsScore + goalScore;
+
+            const feedbackHTML = `
+                <div class="score">${totalScore}/100</div>
+                <div class="score-label">${totalScore >= 90 ? 'Excellent! Outstanding specificity 🎉' : totalScore >= 75 ? 'Good work! Some improvements needed 👍' : totalScore >= 60 ? 'Decent start - needs more detail 💪' : 'Needs significant improvement 🔧'}</div>
+                
+                <div class="score-breakdown">
+                    <h4>Score Breakdown:</h4>
+                    <div class="score-item">
+                        <span class="score-item-label">Role Clarity & Specificity</span>
+                        <span class="score-item-value ${roleScore >= 18 ? 'good' : 'poor'}">${roleScore}/20</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Key Strengths Detail</span>
+                        <span class="score-item-value ${strengthsScore >= 20 ? 'good' : 'poor'}">${strengthsScore}/25</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Quantifiable Achievements</span>
+                        <span class="score-item-value ${achievementsScore >= 24 ? 'good' : 'poor'}">${achievementsScore}/30</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Professional Goal Specificity</span>
+                        <span class="score-item-value ${goalScore >= 20 ? 'good' : 'poor'}">${goalScore}/25</span>
+                    </div>
+                </div>
+
+                ${improvements.length > 0 ? `
+                    <div class="improvement-section">
+                        <h3>💡 Specific Improvement Points</h3>
+                        <ul class="improvement-list">
+                            ${improvements.map(imp => `<li>${imp}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : '<p style="text-align: center; color: #00a86b; font-weight: 600; margin-top: 15px;">Perfect! All criteria met! Ready for next step!</p>'}
+                <p style="text-align: center; margin-top: 20px; color: #666; font-weight: 500;">Keep improving or proceed to next step!</p>
+            `;
+
+            document.getElementById('feedback1').innerHTML = feedbackHTML;
+            document.getElementById('feedback1').classList.add('show');
+            document.getElementById('nextStep1').disabled = false;
+        }
+
+        function displayBriefReference() {
+            const ref = `
+                <h4>📋 Your Profile Brief (Reference)</h4>
+                <p><strong>Role:</strong> ${briefData.role}</p>
+                <p><strong>Key Strengths:</strong> ${briefData.strengths}</p>
+                <p><strong>Major Achievements:</strong> ${briefData.achievements}</p>
+                <p><strong>Professional Goal:</strong> ${briefData.goal}</p>
+            `;
+            document.getElementById('briefReference').innerHTML = ref;
+        }
+
+        function evaluateStep2() {
+            aboutText = document.getElementById('aboutText').value.trim();
+
+            if (!aboutText) {
+                alert('Please write your About section.');
+                return;
+            }
+
+            let capScore = 0;
+            let structureScore = 0;
+            let verbScore = 0;
+            let pronounScore = 0;
+            const improvements = [];
+
+            // Capitalization & Punctuation (20 points)
+            const startsWithCap = /^[A-Z]/.test(aboutText);
+            const endsWithPeriod = /[.!]$/.test(aboutText);
+            const hasProperCaps = !aboutText.match(/\bi\b/g) || aboutText.match(/\bI\b/g);
+            const doubleSpaces = aboutText.match(/  +/g);
+            
+            if (!startsWithCap) {
+                improvements.push('❌ GRAMMAR: First sentence must start with a capital letter. Currently starts with lowercase.');
+                capScore += 5;
+            } else {
+                capScore += 10;
+            }
+            
+            if (!endsWithPeriod) {
+                improvements.push('❌ PUNCTUATION: Last sentence must end with a period (.) or exclamation mark (!)');
+            } else {
+                capScore += 5;
+            }
+            
+            if (!hasProperCaps) {
+                improvements.push('❌ CAPITALIZATION: "I" must always be capitalized in English. Fix all instances of lowercase "i".');
+            } else {
+                capScore += 5;
+            }
+
+            if (doubleSpaces) {
+                improvements.push('❌ FORMATTING: Multiple consecutive spaces found. Use only single spaces between words.');
+            }
+
+            // Sentence Structure (25 points)
+            const sentences = aboutText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const sentenceCount = sentences.length;
+            
+            if (sentenceCount === 1 && aboutText.length > 100) {
+                structureScore = 5;
+                improvements.push('❌ STRUCTURE: Your entire text is ONE sentence. Split it into 3-5 sentences using periods (.) for better readability.');
+            } else if (sentenceCount < 3) {
+                structureScore = 15;
+                improvements.push('⚠️ STRUCTURE: Only ' + sentenceCount + ' sentence(s). Aim for 3-5 sentences to properly develop your profile.');
+            } else {
+                structureScore = 25;
+            }
+
+            const longSentences = sentences.filter(s => s.trim().length > 150);
+            if (longSentences.length > 0) {
+                structureScore -= 8;
+                improvements.push(`❌ SENTENCE LENGTH: ${longSentences.length} sentence(s) exceed 150 characters. Break long sentences into shorter ones.`);
+            }
+
+            // Verb Consistency & Word Choice (30 points)
+            const iAmCount = (aboutText.match(/\bI am\b/gi) || []).length;
+            const thereIsAre = aboutText.match(/\bthere (is|are)\b/gi);
+            const weakVerbs = aboutText.match(/\b(got|get|went|came)\b/gi);
+            
+            if (iAmCount > 2) {
+                verbScore += 10;
+                improvements.push(`⚠️ REPETITION: "I am" appears ${iAmCount} times. Vary your sentence starters: "I specialize in...", "My expertise includes...", "I focus on..."`);
+            } else {
+                verbScore += 20;
+            }
+
+            if (thereIsAre) {
+                verbScore -= 5;
+                improvements.push('❌ WEAK VERBS: Avoid "there is/are" constructions. Use active verbs. Example: "There are many skills I have" → "I possess many skills"');
+            }
+
+            if (weakVerbs) {
+                verbScore -= 5;
+                improvements.push(`❌ INFORMAL VERBS: Weak verbs detected (${weakVerbs.join(', ')}). Use stronger alternatives: "got"→"obtained/achieved", "get"→"receive/accomplish"`);
+            } else {
+                verbScore += 10;
+            }
+
+            // Pronoun Usage (25 points)
+            const hasYour = aboutText.match(/\byour\b/gi);
+            const hasWe = aboutText.match(/\bwe\b/gi);
+            const firstPersonConsistent = aboutText.match(/\b(I|my|me)\b/gi);
+            
+            if (hasYour) {
+                pronounScore = 5;
+                improvements.push('❌ PRONOUN ERROR: "your" is incorrect. LinkedIn About must be in FIRST person (I, my, me), not second person (you, your).');
+            } else if (hasWe) {
+                pronounScore = 10;
+                improvements.push('⚠️ PRONOUN INCONSISTENCY: "we" detected. About sections should focus on "I" unless describing team context.');
+            } else if (firstPersonConsistent && firstPersonConsistent.length >= 3) {
+                pronounScore = 25;
+            } else {
+                pronounScore = 20;
+                improvements.push('⚠️ Use more first-person pronouns (I, my) to make your profile personal and direct.');
+            }
+
+            const totalScore = Math.min(100, capScore + structureScore + verbScore + pronounScore);
+
+            const feedbackHTML = `
+                <div class="score">${totalScore}/100</div>
+                <div class="score-label">${totalScore >= 90 ? 'Excellent grammar! 🎉' : totalScore >= 75 ? 'Good, minor issues to fix 👍' : totalScore >= 60 ? 'Grammar needs work 📝' : 'Significant grammar errors 🔧'}</div>
+                
+                <div class="score-breakdown">
+                    <h4>Score Breakdown:</h4>
+                    <div class="score-item">
+                        <span class="score-item-label">Capitalization & Punctuation</span>
+                        <span class="score-item-value ${capScore >= 18 ? 'good' : 'poor'}">${capScore}/20</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Sentence Structure & Length</span>
+                        <span class="score-item-value ${structureScore >= 20 ? 'good' : 'poor'}">${structureScore}/25</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Verb Consistency & Choice</span>
+                        <span class="score-item-value ${verbScore >= 24 ? 'good' : 'poor'}">${verbScore}/30</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Pronoun Usage & Clarity</span>
+                        <span class="score-item-value ${pronounScore >= 20 ? 'good' : 'poor'}">${pronounScore}/25</span>
+                    </div>
+                </div>
+
+                ${improvements.length > 0 ? `
+                    <div class="improvement-section">
+                        <h3>📝 Grammar Issues (Specific & Actionable)</h3>
+                        <ul class="improvement-list">
+                            ${improvements.map(imp => `<li>${imp}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : '<p style="text-align: center; color: #00a86b; font-weight: 600; margin-top: 15px;">Perfect grammar! Ready for formality check!</p>'}
+                <p style="text-align: center; margin-top: 20px; color: #666; font-weight: 500;">Keep improving or proceed to next step!</p>
+            `;
+
+            document.getElementById('feedback2').innerHTML = feedbackHTML;
+            document.getElementById('feedback2').classList.add('show');
+            document.getElementById('nextStep2').disabled = false;
+        }
+
+        function displayFormalityCheck() {
+            aboutText = document.getElementById('aboutText').value.trim();
+            
+            const ref = `
+                <h4>📝 Your About (Grammar Checked)</h4>
+                <p style="white-space: pre-wrap;">${aboutText}</p>
+            `;
+            document.getElementById('formalityReference').innerHTML = ref;
+
+            const suggestions = generateFormalitySuggestions(aboutText);
+            
+            let suggestionsHTML = '<h3>💼 Formality Enhancement Suggestions</h3><p style="margin-bottom: 15px; color: #666;">Apply these changes to match LinkedIn\'s professional register:</p>';
+            suggestions.forEach((sug, idx) => {
+                suggestionsHTML += `
+                    <div class="suggestion-item">
+                        <strong>${idx + 1}. ${sug.title}</strong>
+                        <p><strong>📍 Current:</strong> "${sug.before}"</p>
+                        <p><strong>✅ Suggested:</strong> "${sug.after}"</p>
+                        <p style="color: #666; font-size: 0.95em; margin-top: 8px;"><strong>Why:</strong> ${sug.reason}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('formalitySuggestions').innerHTML = suggestionsHTML;
+            document.getElementById('formalText').value = aboutText;
+        }
+
+        function generateFormalitySuggestions(text) {
+            const suggestions = [];
+
+            const contractions = text.match(/\b(I'm|don't|can't|won't|shouldn't|couldn't|wouldn't|I've|I'll|it's|that's|they're)\b/gi);
+            if (contractions) {
+                const unique = [...new Set(contractions.map(c => c.toLowerCase()))];
+                const examples = unique.slice(0, 3).map(c => {
+                    const expansions = {
+                        "i'm": "I am", "don't": "do not", "can't": "cannot", "won't": "will not",
+                        "shouldn't": "should not", "couldn't": "could not", "wouldn't": "would not",
+                        "i've": "I have", "i'll": "I will", "it's": "it is", "that's": "that is", "they're": "they are"
+                    };
+                    return `"${c}" → "${expansions[c]}"`;
+                }).join(', ');
+                
+                suggestions.push({
+                    title: 'Replace ALL contractions with full forms',
+                    before: contractions.slice(0, 3).join(', '),
+                    after: examples,
+                    reason: 'LinkedIn is a professional platform. Contractions are casual/informal. Full forms signal professional writing competence.'
+                });
+            }
+
+            const informalVerbs = text.match(/\b(got|get|gonna|wanna)\b/gi);
+            if (informalVerbs) {
+                suggestions.push({
+                    title: 'Replace informal/casual verbs',
+                    before: 'got experience / get results / got promoted',
+                    after: 'obtained experience / achieve results / was promoted',
+                    reason: '"Got/get" are conversational. Use formal alternatives: obtained, achieved, received, acquired, earned.'
+                });
+            }
+
+            const intensifiers = text.match(/\b(really|very|pretty|quite|somewhat)\b/gi);
+            if (intensifiers) {
+                suggestions.push({
+                    title: 'Remove weak intensifiers',
+                    before: 'really good / very experienced / pretty skilled',
+                    after: 'excellent / highly experienced / proficient',
+                    reason: 'Intensifiers like "really/very" weaken your message. Use stronger adjectives or adverbs: highly, extremely, exceptionally.'
+                });
+            }
+
+            if (!text.match(/\b(I would|I am pleased|I look forward|I welcome)\b/gi)) {
+                suggestions.push({
+                    title: 'Add polite, professional closing',
+                    before: '(Your current ending)',
+                    after: 'I would be pleased to discuss opportunities to contribute. / I look forward to connecting with industry professionals.',
+                    reason: 'Professional profiles end with an open, polite invitation. This shows approachability and networking intent.'
+                });
+            }
+
+            const wordCount = text.split(/\s+/).length;
+            if (wordCount < 80) {
+                suggestions.push({
+                    title: 'Expand with specific details',
+                    before: `Current: ~${wordCount} words`,
+                    after: 'Add: company names, project titles, specific technologies, methodologies used',
+                    reason: 'LinkedIn About sections perform best at 120-150 words. Yours is too brief to showcase your full value.'
+                });
+            }
+
+            return suggestions.slice(0, 5);
+        }
+
+        function evaluateStep3() {
+            formalText = document.getElementById('formalText').value.trim();
+
+            if (!formalText) {
+                alert('Please write your revised About section.');
+                return;
+            }
+
+            let formalScore = 0;
+            let verbScore = 0;
+            let politenessScore = 0;
+            let toneScore = 0;
+            const improvements = [];
+
+            // Formal Language check (25 points)
+            const contractions = formalText.match(/\b(I'm|don't|can't|won't|shouldn't|I've|I'll|it's|that's)\b/gi);
+            if (!contractions) {
+                formalScore = 25;
+            } else {
+                formalScore = Math.max(0, 25 - (contractions.length * 5));
+                improvements.push(`❌ FORMALITY: ${contractions.length} contraction(s) remain: ${[...new Set(contractions)].join(', ')}. Expand ALL to full forms.`);
+            }
+
+            // Professional Verbs (25 points)
+            const informalVerbs = formalText.match(/\b(got|get|gonna|wanna)\b/gi);
+            if (!informalVerbs) {
+                verbScore = 25;
+            } else {
+                verbScore = Math.max(0, 25 - (informalVerbs.length * 8));
+                improvements.push(`❌ INFORMAL VERBS: "${informalVerbs.join(', ')}" detected. Replace with: obtained, achieved, received, acquired.`);
+            }
+
+            // Politeness markers (25 points)
+            const hasPoliteClosing = formalText.match(/\b(would be pleased|look forward|welcome|happy to discuss|open to)\b/gi);
+            const hasIntensifiers = formalText.match(/\b(really|very|pretty|quite)\b/gi);
+            
+            if (hasPoliteClosing) {
+                politenessScore += 20;
+            } else {
+                politenessScore += 10;
+                improvements.push('⚠️ POLITENESS: Add a professional closing statement: "I would be pleased to..." or "I look forward to..."');
+            }
+
+            if (hasIntensifiers) {
+                politenessScore -= 5;
+                improvements.push(`⚠️ WEAK LANGUAGE: Remove intensifiers (${hasIntensifiers.join(', ')}). Use stronger adjectives instead.`);
+            } else {
+                politenessScore += 5;
+            }
+
+            // Tone & Register (25 points)
+            const unchanged = formalText.toLowerCase() === aboutText.toLowerCase();
+            if (unchanged) {
+                toneScore = 5;
+                improvements.push('❌ NO CHANGES: Text appears unchanged from Step 2. Apply the formality suggestions above.');
+            } else {
+                toneScore = 20;
+            }
+
+            const hasFirstPerson = formalText.match(/\b(I am|my|me)\b/gi);
+            if (hasFirstPerson) {
+                toneScore += 5;
+            }
+
+            const totalScore = Math.min(100, formalScore + verbScore + politenessScore + toneScore);
+
+            const feedbackHTML = `
+                <div class="score">${totalScore}/100</div>
+                <div class="score-label">${totalScore >= 90 ? 'Excellent formality! 🎉' : totalScore >= 75 ? 'Good progress! 👍' : totalScore >= 60 ? 'Still needs refinement 📝' : 'Significant formality issues 🔧'}</div>
+                
+                <div class="score-breakdown">
+                    <h4>Score Breakdown:</h4>
+                    <div class="score-item">
+                        <span class="score-item-label">Formal Language (no contractions)</span>
+                        <span class="score-item-value ${formalScore >= 20 ? 'good' : 'poor'}">${formalScore}/25</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Professional Verb Choice</span>
+                        <span class="score-item-value ${verbScore >= 20 ? 'good' : 'poor'}">${verbScore}/25</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Politeness Markers</span>
+                        <span class="score-item-value ${politenessScore >= 20 ? 'good' : 'poor'}">${politenessScore}/25</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Appropriate Tone & Register</span>
+                        <span class="score-item-value ${toneScore >= 20 ? 'good' : 'poor'}">${toneScore}/25</span>
+                    </div>
+                </div>
+
+                ${improvements.length > 0 ? `
+                    <div class="improvement-section">
+                        <h3>💡 Formality Improvement Points</h3>
+                        <ul class="improvement-list">
+                            ${improvements.map(imp => `<li>${imp}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : '<p style="text-align: center; color: #00a86b; font-weight: 600; margin-top: 15px;">Perfect formality! Ready for platform optimization!</p>'}
+                <p style="text-align: center; margin-top: 20px; color: #666; font-weight: 500;">Keep refining or proceed to final step!</p>
+            `;
+
+            document.getElementById('feedback3').innerHTML = feedbackHTML;
+            document.getElementById('feedback3').classList.add('show');
+            document.getElementById('nextStep3').disabled = false;
+        }
+
+        function displayOptimizationSuggestions() {
+            formalText = document.getElementById('formalText').value.trim();
+            
+            const ref = `
+                <h4>📝 Your About (Formality Checked)</h4>
+                <p style="white-space: pre-wrap;">${formalText}</p>
+            `;
+            document.getElementById('optimizationReference').innerHTML = ref;
+
+            const suggestions = generateOptimizationSuggestions(formalText);
+            
+            let suggestionsHTML = '<h3>✨ LinkedIn Platform Optimization</h3><p style="margin-bottom: 15px; color: #666;">These changes improve mobile readability and engagement:</p>';
+            suggestions.forEach((sug, idx) => {
+                suggestionsHTML += `
+                    <div class="suggestion-item">
+                        <strong>${idx + 1}. ${sug.title}</strong>
+                        <p><strong>📍 Action Required:</strong> ${sug.action}</p>
+                        <p><strong>✅ Example:</strong> ${sug.example}</p>
+                        <p style="color: #666; font-size: 0.95em; margin-top: 8px;"><strong>Why:</strong> ${sug.reason}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('optimizationSuggestions').innerHTML = suggestionsHTML;
+            document.getElementById('finalText').value = formalText;
+        }
+
+        function generateOptimizationSuggestions(text) {
+            const suggestions = [];
+
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            
+            // Emoji check
+            if (sentences.length > 0) {
+                const firstSentence = sentences[0].trim();
+                const hasEmoji = /[\u{1F300}-\u{1F9FF}]/u.test(firstSentence);
+                if (!hasEmoji) {
+                    suggestions.push({
+                        title: 'Add professional emoji to opening',
+                        action: 'Start your first sentence with a relevant emoji',
+                        example: `"🚀 ${firstSentence}" or "💼 ${firstSentence}" or "🎯 ${firstSentence}"`,
+                        reason: 'Emojis increase profile views by 30-40% on LinkedIn. They catch the eye in search results and feeds.'
+                    });
+                }
+            }
+
+            // Line breaks check
+            const hasLineBreaks = text.includes('\n\n');
+            if (!hasLineBreaks) {
+                suggestions.push({
+                    title: 'Add paragraph breaks for scannability',
+                    action: 'Divide your text into 2-3 short paragraphs with blank lines between them',
+                    example: 'Paragraph 1: Who you are + role (2-3 sentences)\n\n(blank line)\n\nParagraph 2: What you do + achievements (2-3 sentences)\n\n(blank line)\n\nParagraph 3: Your goal + invitation to connect (1-2 sentences)',
+                    reason: 'LinkedIn users scan on mobile. White space improves readability by 60%. Most users never read wall-of-text profiles.'
+                });
+            }
+
+            // Sentence length check
+            const longSentences = sentences.filter(s => s.trim().length > 120);
+            if (longSentences.length > 0) {
+                const example = longSentences[0].substring(0, 60);
+                suggestions.push({
+                    title: 'Shorten long sentences',
+                    action: `Break ${longSentences.length} sentence(s) longer than 120 characters into 2 sentences each`,
+                    example: `"${example}..." ← Split this at a natural break point (after a comma or conjunc tion)`,
+                    reason: 'Mobile screens show ~50 characters per line. Sentences over 120 chars require scrolling and lose readers.'
+                });
+            }
+
+            // Word count optimization
+            const words = text.split(/\s+/).filter(w => w.length > 0).length;
+            if (words < 100) {
+                suggestions.push({
+                    title: 'Expand content to optimal length',
+                    action: `Add ${120 - words} more words to reach 120-150 word sweet spot`,
+                    example: 'Add: specific company names, project titles, technologies used, team sizes, or measurable outcomes',
+                    reason: 'Profiles with 120-150 words get 40% more profile views. Too short = missed opportunities to showcase value.'
+                });
+            } else if (words > 170) {
+                suggestions.push({
+                    title: 'Reduce word count for mobile',
+                    action: `Cut ${words - 150} words to reach optimal 120-150 range`,
+                    example: 'Remove: redundant phrases, filler words, overly detailed descriptions. Keep only high-impact content.',
+                    reason: 'Profiles over 160 words see 25% fewer complete reads. LinkedIn users have short attention spans.'
+                });
+            }
+
+            // Numbers highlighting
+            const hasNumbers = /\d+/.test(text);
+            if (hasNumbers && !text.includes('📈') && !text.includes('💰') && !text.includes('⬆️')) {
+                suggestions.push({
+                    title: 'Emphasize key metrics',
+                    action: 'Add visual emphasis to your numbers/percentages',
+                    example: 'Put metrics on separate lines or add relevant emojis: "300% increase 📈" or "Led team of 10 👥" or "$2M revenue 💰"',
+                    reason: 'Numbers are your strongest proof points. Make them impossible to miss during scanning.'
+                });
+            }
+
+            // Action verbs
+            const weakStarts = text.match(/\bI am a\b|\bI work\b|\bI help\b/gi);
+            if (weakStarts && weakStarts.length > 1) {
+                suggestions.push({
+                    title: 'Use dynamic action verbs',
+                    action: 'Replace passive constructions with active, powerful verbs',
+                    example: '"I am a marketer who works with..." → "I drive growth through..." or "I specialize in..." or "I transform..."',
+                    reason: 'Strong action verbs convey confidence and expertise. "I am" is static; action verbs show impact.'
+                });
+            }
+
+            return suggestions.slice(0, 5);
+        }
+
+        function evaluateStep4() {
+            const finalText = document.getElementById('finalText').value.trim();
+
+            if (!finalText) {
+                alert('Please create your final About section.');
+                return;
+            }
+
+            let visualScore = 0;
+            let readabilityScore = 0;
+            let wordCountScore = 0;
+            let scannabilityScore = 0;
+            const improvements = [];
+
+            // Visual Elements (20 points)
+            const hasEmoji = /[\u{1F300}-\u{1F9FF}]/u.test(finalText);
+            const emojiCount = (finalText.match(/[\u{1F300}-\u{1F9FF}]/gu) || []).length;
+            
+            if (!hasEmoji) {
+                visualScore = 0;
+                improvements.push('❌ NO EMOJIS: Add 1-3 relevant professional emojis (🚀, 💼, 🎯, 📈) to increase visual appeal.');
+            } else if (emojiCount >= 1 && emojiCount <= 3) {
+                visualScore = 20;
+            } else if (emojiCount > 3) {
+                visualScore = 15;
+                improvements.push('⚠️ TOO MANY EMOJIS: More than 3 emojis can look unprofessional. Keep it to 2-3.');
+            }
+
+            // Readability (30 points)
+            const hasLineBreaks = finalText.includes('\n');
+            const paragraphs = finalText.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            
+            if (!hasLineBreaks) {
+                readabilityScore = 5;
+                improvements.push('❌ NO PARAGRAPHS: Add line breaks! Divide into 2-3 paragraphs for mobile readability.');
+            } else if (paragraphs.length < 2) {
+                readabilityScore = 15;
+                improvements.push('⚠️ NEEDS MORE BREAKS: Add at least one more paragraph break for better visual hierarchy.');
+            } else if (paragraphs.length >= 2 && paragraphs.length <= 3) {
+                readabilityScore = 30;
+            } else {
+                readabilityScore = 25;
+                improvements.push('⚠️ TOO MANY PARAGRAPHS: Too fragmented. Combine into 2-3 cohesive paragraphs.');
+            }
+
+            // Word Count (25 points)
+            const words = finalText.split(/\s+/).filter(w => w.length > 0).length;
+            
+            if (words >= 120 && words <= 150) {
+                wordCountScore = 25;
+            } else if (words >= 100 && words < 120) {
+                wordCountScore = 18;
+                improvements.push(`⚠️ WORD COUNT: ${words} words. Optimal is 120-150. Add ${120 - words} more words with specific details.`);
+            } else if (words > 150 && words <= 170) {
+                wordCountScore = 18;
+                improvements.push(`⚠️ WORD COUNT: ${words} words. Optimal is 120-150. Trim ${words - 150} words to improve engagement.`);
+            } else if (words < 100) {
+                wordCountScore = 10;
+                improvements.push(`❌ TOO SHORT: Only ${words} words. Add ${120 - words} words minimum. Include specific achievements and details.`);
+            } else {
+                wordCountScore = 12;
+                improvements.push(`❌ TOO LONG: ${words} words. Cut to 120-150. Remove redundancy and keep only high-impact content.`);
+            }
+
+            // Scannability (25 points)
+            const sentences = finalText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const longSentences = sentences.filter(s => s.trim().length > 120);
+            const avgSentenceLength = sentences.reduce((sum, s) => sum + s.trim().length, 0) / sentences.length;
+            
+            if (longSentences.length === 0) {
+                scannabilityScore += 15;
+            } else if (longSentences.length === 1) {
+                scannabilityScore += 10;
+                improvements.push('⚠️ SENTENCE LENGTH: 1 sentence exceeds 120 characters. Break it into 2 shorter sentences.');
+            } else {
+                scannabilityScore += 5;
+                improvements.push(`❌ LONG SENTENCES: ${longSentences.length} sentences exceed 120 characters. Break them up for mobile readability.`);
+            }
+
+            const hasNumbers = /\d+/.test(finalText);
+            if (hasNumbers) {
+                scannabilityScore += 10;
+            } else {
+                improvements.push('⚠️ NO METRICS: Consider adding at least one quantifiable achievement for credibility.');
+            }
+
+            const totalScore = Math.min(100, visualScore + readabilityScore + wordCountScore + scannabilityScore);
+
+            const feedbackHTML = `
+                <div class="score">${totalScore}/100</div>
+                <div class="score-label">${totalScore >= 95 ? 'Perfect! LinkedIn-optimized! 🎉' : totalScore >= 85 ? 'Excellent! Nearly perfect! 🌟' : totalScore >= 75 ? 'Good work! Minor tweaks needed 👍' : 'Needs more optimization 🔧'}</div>
+                
+                <div class="score-breakdown">
+                    <h4>Score Breakdown:</h4>
+                    <div class="score-item">
+                        <span class="score-item-label">Visual Elements (emojis, formatting)</span>
+                        <span class="score-item-value ${visualScore >= 18 ? 'good' : 'poor'}">${visualScore}/20</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Readability (line breaks, paragraphs)</span>
+                        <span class="score-item-value ${readabilityScore >= 25 ? 'good' : 'poor'}">${readabilityScore}/30</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Word Count Optimization (120-150)</span>
+                        <span class="score-item-value ${wordCountScore >= 20 ? 'good' : 'poor'}">${wordCountScore}/25</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-item-label">Scannability (sentence length)</span>
+                        <span class="score-item-value ${scannabilityScore >= 20 ? 'good' : 'poor'}">${scannabilityScore}/25</span>
+                    </div>
+                </div>
+
+                ${improvements.length > 0 ? `
+                    <div class="improvement-section">
+                        <h3>✨ Final Polish Suggestions</h3>
+                        <ul class="improvement-list">
+                            ${improvements.map(imp => `<li>${imp}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                <p style="text-align: center; margin-top: 20px; color: ${totalScore >= 90 ? '#00a86b' : '#666'}; font-size: 1.1em; font-weight: 600;">
+                    ${totalScore >= 90 ? '🎉 Your LinkedIn About is ready to publish!' : 'Review suggestions above and re-evaluate for a higher score.'}
+                </p>
+            `;
+
+            document.getElementById('feedback4').innerHTML = feedbackHTML;
+            document.getElementById('feedback4').classList.add('show');
+
+            // Show final output
+            document.getElementById('finalContent').textContent = finalText;
+            document.getElementById('finalOutput').style.display = 'block';
+            
+            // Show learning summary
+            document.getElementById('learningSummary').style.display = 'block';
+        }
+
+        function copyFinalText() {
+            const finalText = document.getElementById('finalContent').textContent;
+            
+            navigator.clipboard.writeText(finalText).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#00a86b';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy. Please select and copy manually.');
+            });
+        }
+    </script>
+</body>
+</html>
