@@ -1783,21 +1783,45 @@
             const studentName = document.getElementById('studentName').value.trim();
             const timestamp = new Date().toISOString();
             
-            const submissionKey = `student:${studentId}:step${step}:${Date.now()}`;
+            if (!studentId || !studentName) {
+                alert('학번과 이름을 입력해주세요.');
+                return;
+            }
+
+            // Google Sheets에 저장할 데이터 형식 (4단계 점수는 시트에서 분리하여 기록)
             const submissionData = {
                 studentId,
                 studentName,
                 step,
                 score,
-                data,
                 timestamp
+                // data 필드는 현재 Sheets 구조에 맞추기 위해 제외
             };
             
             try {
-                await window.storage.set(submissionKey, JSON.stringify(submissionData), true);
-                console.log('Submission saved:', submissionKey);
+                // ⭐️ Netlify Function API 호출: submit.js를 호출합니다.
+                const response = await fetch('/.netlify/functions/submit', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(submissionData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+                
+                const result = await response.json(); 
+                console.log('Submission saved:', result);
+
+                // 제출 성공 메시지를 표시합니다.
+                const successMessage = document.getElementById('step' + step + 'Result');
+                successMessage.innerHTML += '<p style="color: green; font-weight: bold; margin-top: 10px;">✅ 제출 완료! 교사 대시보드에 기록되었습니다.</p>';
+
             } catch (error) {
                 console.error('Failed to save submission:', error);
+                alert('제출에 실패했습니다. 네트워크 연결을 확인하거나 관리자에게 문의하세요. (Details: ' + error.message + ')');
             }
         }
     </script>

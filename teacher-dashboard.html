@@ -449,52 +449,29 @@
             document.getElementById('passwordInput').value = '';
         }
 
-        async function loadData() {
-            document.getElementById('loadingIndicator').style.display = 'block';
-            document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('noDataMessage').style.display = 'none';
-
+        async function loadStudentData() {
+            // 로딩 상태 표시
+            document.getElementById('studentTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center;">학생 기록을 불러오는 중...</td></tr>';
+            
             try {
-                // Fetch all student submissions
-                const result = await window.storage.list('student:', true);
-                
-                if (!result || !result.keys || result.keys.length === 0) {
-                    document.getElementById('loadingIndicator').style.display = 'none';
-                    document.getElementById('noDataMessage').style.display = 'block';
-                    return;
+                // ⭐️ Netlify Function API 호출: data.js를 호출합니다.
+                const response = await fetch('/.netlify/functions/data');
+
+                if (!response.ok) {
+                    throw new Error(`Server responded with status: ${response.status}`);
                 }
 
-                // Organize data by student
-                allStudentData = {};
-                
-                for (const key of result.keys) {
-                    try {
-                        const data = await window.storage.get(key, true);
-                        if (data && data.value) {
-                            const submission = JSON.parse(data.value);
-                            const studentId = submission.studentId;
-                            
-                            if (!allStudentData[studentId]) {
-                                allStudentData[studentId] = {
-                                    studentId: studentId,
-                                    studentName: submission.studentName,
-                                    submissions: []
-                                };
-                            }
-                            
-                            allStudentData[studentId].submissions.push(submission);
-                        }
-                    } catch (e) {
-                        console.error('Error parsing submission:', e);
-                    }
-                }
+                // API 응답(학생 데이터)을 JSON으로 변환
+                allStudentData = await response.json();
 
-                displayData();
+                // 데이터가 성공적으로 로드된 후 테이블을 다시 그립니다.
+                renderStudentTable(allStudentData);
                 
+                console.log('Student data loaded successfully:', allStudentData);
+
             } catch (error) {
-                console.error('Error loading data:', error);
-                alert('Failed to load data. Please try again.');
-                document.getElementById('loadingIndicator').style.display = 'none';
+                console.error('Failed to load student data:', error);
+                document.getElementById('studentTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">데이터 로드에 실패했습니다. (네트워크 또는 서버 문제)</td></tr>';
             }
         }
 
