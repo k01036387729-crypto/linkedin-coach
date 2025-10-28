@@ -636,6 +636,20 @@
         </div>
 
         <div class="content">
+          <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 30px; border-left: 5px solid #1976d2;">
+              <h3 style="color: #1565c0; margin-bottom: 15px;">👤 Student Information</h3>
+              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                  <div style="flex: 1; min-width: 200px;">
+                      <label style="display: block; font-weight: 600; margin-bottom: 5px; color: #333;">Student ID</label>
+                      <input type="text" id="studentId" placeholder="e.g., 20241234" style="width: 100%; padding: 10px; border: 2px solid #90caf9; border-radius: 8px; font-size: 1em;">
+                  </div>
+                  <div style="flex: 1; min-width: 200px;">
+                      <label style="display: block; font-weight: 600; margin-bottom: 5px; color: #333;">Student Name</label>
+                      <input type="text" id="studentName" placeholder="e.g., John Doe" style="width: 100%; padding: 10px; border: 2px solid #90caf9; border-radius: 8px; font-size: 1em;">
+                  </div>
+              </div>
+              <p style="margin-top: 10px; color: #666; font-size: 0.9em;">⚠️ Required for submission tracking. Your instructor can view your progress.</p>
+        </div>
             <!-- Step 1: Profile Brief -->
             <div class="step-section active" id="step1">
                 <h2 class="step-title">Step 1: Profile Brief</h2>
@@ -1000,6 +1014,14 @@
         }
 
         function evaluateStep1() {
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+    
+            if (!studentId || !studentName) {
+                alert('Please enter your Student ID and Name first.');
+                return;
+            }
+    
             const role = document.getElementById('role').value.trim();
             const strengths = document.getElementById('strengths').value.trim();
             const achievements = document.getElementById('achievements').value.trim();
@@ -1127,6 +1149,10 @@
             document.getElementById('feedback1').innerHTML = feedbackHTML;
             document.getElementById('feedback1').classList.add('show');
             document.getElementById('nextStep1').disabled = false;
+            saveSubmission(1, totalScore, {
+                role, strengths, achievements, goal,
+                roleScore, strengthsScore, achievementsScore, goalScore
+            });
         }
 
         function displayBriefReference() {
@@ -1285,6 +1311,7 @@
             document.getElementById('feedback2').innerHTML = feedbackHTML;
             document.getElementById('feedback2').classList.add('show');
             document.getElementById('nextStep2').disabled = false;
+            saveSubmission(2, totalScore, {aboutText, capScore, structureScore, verbScore, pronounScore});
         }
 
         function displayFormalityCheck() {
@@ -1483,6 +1510,7 @@
             document.getElementById('feedback3').innerHTML = feedbackHTML;
             document.getElementById('feedback3').classList.add('show');
             document.getElementById('nextStep3').disabled = false;
+            saveSubmission(3, totalScore, {formalText, formalScore, verbScore, politenessScore, toneScore});
         }
 
         function displayOptimizationSuggestions() {
@@ -1731,6 +1759,7 @@
             
             // Show learning summary
             document.getElementById('learningSummary').style.display = 'block';
+            saveSubmission(4, totalScore, {finalText, visualScore, readabilityScore, wordCountScore, scannabilityScore});
         }
 
         function copyFinalText() {
@@ -1748,6 +1777,28 @@
             }).catch(err => {
                 alert('Failed to copy. Please select and copy manually.');
             });
+        }
+        async function saveSubmission(step, score, data) {
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const timestamp = new Date().toISOString();
+            
+            const submissionKey = `student:${studentId}:step${step}:${Date.now()}`;
+            const submissionData = {
+                studentId,
+                studentName,
+                step,
+                score,
+                data,
+                timestamp
+            };
+            
+            try {
+                await window.storage.set(submissionKey, JSON.stringify(submissionData), true);
+                console.log('Submission saved:', submissionKey);
+            } catch (error) {
+                console.error('Failed to save submission:', error);
+            }
         }
     </script>
 </body>
