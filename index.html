@@ -1153,6 +1153,10 @@
                 role, strengths, achievements, goal,
                 roleScore, strengthsScore, achievementsScore, goalScore
             });
+            document.getElementById('feedback1').innerHTML += `
+                <p style="color: #00a86b; font-weight: bold; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                    ✅ 제출 완료! 교사 대시보드에 기록되었습니다.
+                </p>`;
         }
 
         function displayBriefReference() {
@@ -1312,6 +1316,10 @@
             document.getElementById('feedback2').classList.add('show');
             document.getElementById('nextStep2').disabled = false;
             saveSubmission(2, totalScore, {aboutText, capScore, structureScore, verbScore, pronounScore});
+            document.getElementById('feedback2').innerHTML += `
+                <p style="color: #00a86b; font-weight: bold; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                    ✅ 제출 완료! 교사 대시보드에 기록되었습니다.
+                </p>`;
         }
 
         function displayFormalityCheck() {
@@ -1511,6 +1519,10 @@
             document.getElementById('feedback3').classList.add('show');
             document.getElementById('nextStep3').disabled = false;
             saveSubmission(3, totalScore, {formalText, formalScore, verbScore, politenessScore, toneScore});
+            document.getElementById('feedback3').innerHTML += `
+                <p style="color: #00a86b; font-weight: bold; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                    ✅ 제출 완료! 교사 대시보드에 기록되었습니다.
+                </p>`;
         }
 
         function displayOptimizationSuggestions() {
@@ -1760,6 +1772,10 @@
             // Show learning summary
             document.getElementById('learningSummary').style.display = 'block';
             saveSubmission(4, totalScore, {finalText, visualScore, readabilityScore, wordCountScore, scannabilityScore});
+            document.getElementById('feedback4').innerHTML += `
+                <p style="color: #00a86b; font-weight: bold; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                    ✅ 최종 제출 완료! 교사 대시보드에 기록되었습니다.
+                </p>`;
         }
 
         function copyFinalText() {
@@ -1815,9 +1831,7 @@
                 const result = await response.json(); 
                 console.log('Submission saved:', result);
 
-                // 제출 성공 메시지를 표시합니다.
-                const successMessage = document.getElementById('step' + step + 'Result');
-                successMessage.innerHTML += '<p style="color: green; font-weight: bold; margin-top: 10px;">✅ 제출 완료! 교사 대시보드에 기록되었습니다.</p>';
+                
 
             } catch (error) {
                 console.error('Failed to save submission:', error);
