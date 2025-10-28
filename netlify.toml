@@ -1,0 +1,7 @@
+[build]
+  # 빌드 결과물이 배포될 폴더 (루트 폴더)
+  publish = "."
+
+[functions]
+  # Netlify Functions 파일들이 위치한 폴더
+  directory = "netlify/functions"
