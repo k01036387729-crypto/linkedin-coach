@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - LinkedIn Profile Coach</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-container h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        .login-container input:focus {
+            outline: none;
+            border-color: #0077b5;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 15px;
+            background: #0077b5;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-container button:hover {
+            background: #005885;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,119,181,0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: none;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #0077b5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 5px solid #0077b5;
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0077b5;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .controls input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .controls button {
+            padding: 12px 24px;
+            background: #0077b5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .controls button:hover {
+            background: #005885;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #0077b5;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .score-excellent {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .score-good {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .score-fair {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .score-poor {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .detail-btn {
+            padding: 6px 12px;
+            background: #e3f2fd;
+            color: #1565c0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .detail-btn:hover {
+            background: #1565c0;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .submission-detail {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #0077b5;
+        }
+
+        .submission-detail h3 {
+            color: #0077b5;
+            margin-bottom: 15px;
+        }
+
+        .submission-detail p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .submission-detail strong {
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+        }
+
+        .no-data svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .export-btn {
+            background: #00a86b;
+        }
+
+        .export-btn:hover {
+            background: #008c59;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <h1>🔒 Teacher Dashboard</h1>
+        <p>Enter password to access student data</p>
+        <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter') login()">
+        <button onclick="login()">Login</button>
+        <p style="margin-top: 20px; font-size: 0.9em; color: #999;">Default password: prof2025</p>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="container" id="dashboard">
+        <div class="header">
+            <div>
+                <h1>📊 Teacher Dashboard</h1>
+                <p style="opacity: 0.9; margin-top: 5px;">LinkedIn Profile Writing Coach - Student Progress Tracking</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Students</h3>
+                <div class="stat-value" id="totalStudents">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Submissions</h3>
+                <div class="stat-value" id="totalSubmissions">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Average Score</h3>
+                <div class="stat-value" id="avgScore">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Learners</h3>
+                <div class="stat-value" id="activeStudents">0</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="controls">
+                <input type="text" id="searchInput" placeholder="🔍 Search by Student ID or Name..." oninput="filterTable()">
+                <button onclick="loadData()">🔄 Refresh Data</button>
+                <button class="export-btn" onclick="exportToCSV()">📥 Export CSV</button>
+            </div>
+
+            <div id="loadingIndicator" class="loading">
+                Loading student data...
+            </div>
+
+            <div id="tableContainer" style="display: none;">
+                <table id="studentTable">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Submissions</th>
+                            <th>Highest Score</th>
+                            <th>Latest Score</th>
+                            <th>Progress</th>
+                            <th>Last Submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="noDataMessage" class="no-data" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+                <h3>No Student Data Yet</h3>
+                <p>Student submissions will appear here once they start using the platform.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = 'prof2025';
+        let allStudentData = {};
+
+        function login() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === CORRECT_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadData();
+            } else {
+                alert('Incorrect password. Please try again.');
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+        }
+
+        async function loadData() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('tableContainer').style.display = 'none';
+            document.getElementById('noDataMessage').style.display = 'none';
+
+            try {
+                // Fetch all student submissions
+                const result = await window.storage.list('student:', true);
+                
+                if (!result || !result.keys || result.keys.length === 0) {
+                    document.getElementById('loadingIndicator').style.display = 'none';
+                    document.getElementById('noDataMessage').style.display = 'block';
+                    return;
+                }
+
+                // Organize data by student
+                allStudentData = {};
+                
+                for (const key of result.keys) {
+                    try {
+                        const data = await window.storage.get(key, true);
+                        if (data && data.value) {
+                            const submission = JSON.parse(data.value);
+                            const studentId = submission.studentId;
+                            
+                            if (!allStudentData[studentId]) {
+                                allStudentData[studentId] = {
+                                    studentId: studentId,
+                                    studentName: submission.studentName,
+                                    submissions: []
+                                };
+                            }
+                            
+                            allStudentData[studentId].submissions.push(submission);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing submission:', e);
+                    }
+                }
+
+                displayData();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Failed to load data. Please try again.');
+                document.getElementById('loadingIndicator').style.display = 'none';
+            }
+        }
+
+        function displayData() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+
+            let totalStudents = Object.keys(allStudentData).length;
+            let totalSubmissions = 0;
+            let totalScores = 0;
+            let scoreCount = 0;
+            let activeStudents = 0;
+
+            const now = Date.now();
+            const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
+
+            Object.values(allStudentData).forEach(student => {
+                const submissions = student.submissions.sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+
+                totalSubmissions += submissions.length;
+                
+                const scores = submissions.map(s => s.score);
+                const highestScore = Math.max(...scores);
+                const latestScore = submissions[0].score;
+                
+                scores.forEach(s => {
+                    totalScores += s;
+                    scoreCount++;
+                });
+
+                const lastSubmitTime = new Date(submissions[0].timestamp).getTime();
+                if (lastSubmitTime > sevenDaysAgo) {
+                    activeStudents++;
+                }
+
+                const progress = `Step ${submissions[0].step}/4`;
+                const lastSubmitted = formatDate(submissions[0].timestamp);
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${student.studentId}</strong></td>
+                    <td>${student.studentName}</td>
+                    <td>${submissions.length}</td>
+                    <td><span class="${getScoreClass(highestScore)}">${highestScore}</span></td>
+                    <td><span class="${getScoreClass(latestScore)}">${latestScore}</span></td>
+                    <td>${progress}</td>
+                    <td>${lastSubmitted}</td>
+                    <td><button class="detail-btn" onclick="showDetails('${student.studentId}')">View Details</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update stats
+            document.getElementById('totalStudents').textContent = totalStudents;
+            document.getElementById('totalSubmissions').textContent = totalSubmissions;
+            document.getElementById('avgScore').textContent = scoreCount > 0 ? Math.round(totalScores / scoreCount) : 0;
+            document.getElementById('activeStudents').textContent = activeStudents;
+
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.getElementById('tableContainer').style.display = 'block';
+        }
+
+        function getScoreClass(score) {
+            if (score >= 90) return 'score-badge score-excellent';
+            if (score >= 75) return 'score-badge score-good';
+            if (score >= 60) return 'score-badge score-fair';
+            return 'score-badge score-poor';
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            
+            if (days === 0 && hours === 0) return 'Just now';
+            if (days === 0) return `${hours}h ago`;
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days} days ago`;
+            return date.toLocaleDateString();
+        }
+
+        function showDetails(studentId) {
+            const student = allStudentData[studentId];
+            const submissions = student.submissions.sort((a, b) => 
+                new Date(b.timestamp) - new Date(a.timestamp)
+            );
+
+            let html = `
+                <h2>${student.studentName} (${student.studentId})</h2>
+                <p style="color: #666; margin-bottom: 30px;">Total Submissions: ${submissions.length}</p>
+            `;
+
+            submissions.forEach((sub, idx) => {
+                html += `
+                    <div class="submission-detail">
+                        <h3>Submission #${submissions.length - idx} - Step ${sub.step}</h3>
+                        <p><strong>Score:</strong> <span class="${getScoreClass(sub.score)}">${sub.score}/100</span></p>
+                        <p><strong>Submitted:</strong> ${new Date(sub.timestamp).toLocaleString()}</p>
+                        <hr style="margin: 15px 0; border: none; border-top: 1px solid #e0e0e0;">
+                        <h4 style="margin: 15px 0 10px 0; color: #555;">Content Details:</h4>
+                `;
+
+                if (sub.step === 1) {
+                    html += `
+                        <p><strong>Role:</strong> ${sub.data.role}</p>
+                        <p><strong>Strengths:</strong> ${sub.data.strengths}</p>
+                        <p><strong>Achievements:</strong> ${sub.data.achievements}</p>
+                        <p><strong>Goal:</strong> ${sub.data.goal}</p>
+                        <p style="margin-top: 10px;"><strong>Score Breakdown:</strong> Role: ${sub.data.roleScore}/20, Strengths: ${sub.data.strengthsScore}/25, Achievements: ${sub.data.achievementsScore}/30, Goal: ${sub.data.goalScore}/25</p>
+                    `;
+                } else if (sub.step === 2) {
+                    html += `
+                        <p><strong>About Text:</strong></p>
+                        <p style="background: white; padding: 15px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6;">${sub.data.aboutText}</p>
+                        <p style="margin-top: 10px;"><strong>Score Breakdown:</strong> Capitalization: ${sub.data.capScore}/20, Structure: ${sub.data.structureScore}/25, Verb Choice: ${sub.data.verbScore}/30, Pronoun: ${sub.data.pronounScore}/25</p>
+                    `;
+                } else if (sub.step === 3) {
+                    html += `
+                        <p><strong>Formal Text:</strong></p>
+                        <p style="background: white; padding: 15px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6;">${sub.data.formalText}</p>
+                        <p style="margin-top: 10px;"><strong>Score Breakdown:</strong> Formal Language: ${sub.data.formalScore}/25, Professional Verbs: ${sub.data.verbScore}/25, Politeness: ${sub.data.politenessScore}/25, Tone: ${sub.data.toneScore}/25</p>
+                    `;
+                } else if (sub.step === 4) {
+                    html += `
+                        <p><strong>Final Text:</strong></p>
+                        <p style="background: white; padding: 15px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6;">${sub.data.finalText}</p>
+                        <p style="margin-top: 10px;"><strong>Score Breakdown:</strong> Visual: ${sub.data.visualScore}/20, Readability: ${sub.data.readabilityScore}/30, Word Count: ${sub.data.wordCountScore}/25, Scannability: ${sub.data.scannabilityScore}/25</p>
+                    `;
+                }
+
+                html += `</div>`;
+            });
+
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('detailModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#studentTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        function exportToCSV() {
+            let csv = 'Student ID,Name,Total Submissions,Highest Score,Latest Score,Last Submitted\n';
+            
+            Object.values(allStudentData).forEach(student => {
+                const submissions = student.submissions.sort((a, b) => 
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+                const scores = submissions.map(s => s.score);
+                const highestScore = Math.max(...scores);
+                const latestScore = submissions[0].score;
+                const lastSubmitted = new Date(submissions[0].timestamp).toLocaleString();
+                
+                csv += `${student.studentId},${student.studentName},${submissions.length},${highestScore},${latestScore},"${lastSubmitted}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `student-progress-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
